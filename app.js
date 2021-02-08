@@ -1,4 +1,4 @@
-function searchButtonHandler() {
+const searchButtonHandler = () => {
     const searchInputValue = document.getElementById('searchInput').value;
     let url = '';
     if (searchInputValue.length == 1) {
@@ -10,18 +10,18 @@ function searchButtonHandler() {
     else {
         url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInputValue}`
         fetch(url)
-            .then(res => res.json())
-            .then(data => displayMeals(data));
+        .then(res => res.json())
+        .then(data => displayMeals(data))
+        .catch(error => showError());
     }
 }
 
-function displayMeals(matchedMeals) {
+const displayMeals = matchedMeals => {
     document.getElementById('ingredientInfoSection').style.display = 'none'
     document.getElementById('matchedMeals').innerHTML = '';
     const matchedMealsArray = matchedMeals.meals;
     for (let i = 0; i < matchedMealsArray.length; i++) {
         const meal = matchedMealsArray[i];
-        console.log(meal);
         const matchedMealDiv = document.createElement('div')
         matchedMealDiv.className = "meal-item"
         const mealInfo = `
@@ -53,11 +53,13 @@ function displayMeals(matchedMeals) {
                     <h5>${meal.strIngredient8}</h5>
                     <h5>${meal.strIngredient9}</h5>
                     <h5>${meal.strIngredient10}</h5>
-                    <h5>${meal.strIngredient20}</h5>
                 </div>
                 </div>
             `
             document.getElementById('ingredientInfoSection').innerHTML = ingredientInfo;
         });
     }
+}
+const showError = () =>{
+    document.getElementById('matchedMeals').innerHTML = "<h2> Your Search Didn't matched to any of our meals </h2>"
 }
